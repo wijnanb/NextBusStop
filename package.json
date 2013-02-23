@@ -1,0 +1,12 @@
+{
+    "name" : "NextBusStop",
+    "description" : "Find out what's the next bus stop when riding a bus of De Lijn",
+    "author" : "Bert Wijnants",
+    "version" : "0.1.0",
+    "dependencies" : {
+        "coffee-script" : ">1.4.x"
+    },
+    "engines" : {
+        "node":"0.8.x"
+    }
+}

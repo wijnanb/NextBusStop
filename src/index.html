@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <title>Next Stop</title>
+        <meta name="description" content="">
+
+        <meta name="HandheldFriendly" content="True">
+        <meta name="MobileOptimized" content="320">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, target-densitydpi=160dpi" />
+        <meta http-equiv="cleartype" content="on">
+
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57x57-precomposed.png">
+        <link rel="shortcut icon" href="img/apple-touch-icon.png">
+
+        <link rel="apple-touch-startup-image" href="img/iphone-startup-320-460.png" media="screen and (max-device-width: 320px) and (-webkit-min-device-pixel-ratio: 1)" />
+        <link rel="apple-touch-startup-image" href="img/iphone-startup-640-920.png" media="(device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2)" />
+        <link rel="apple-touch-startup-image" href="img/iphone-startup-640-1096.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" />
+
+        <meta name="apple-mobile-web-app-capable" content="yes"><!-- location is broken on iOS6, fixed on iOS 6.1 -->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="Next Stop">
+        <meta name="msapplication-TileImage" content="img/apple-touch-icon-144x144-precomposed.png">
+        <meta name="msapplication-TileColor" content="#222222">
+
+        <link rel="stylesheet" href="compiled/css/webapp.css">
+
+        <script src="compiled/js/config.js"></script>
+        <script src="js/libs/zepto-1.0rc1.js"></script>
+        <script src="js/libs/underscore-1.4.4-min.js"></script>
+        <script src="js/libs/backbone-0.9.10.js"></script>
+        <script src="compiled/js/classes/PageManager.js"></script>
+        <script src="compiled/js/classes/Station.js"></script>
+        <script src="compiled/js/app.js"></script>
+    </head>
+    <body>
+        <div id="app" class="app">
+            <header class="fixed">
+                <div id="navigation" class="navigation">
+                    <h1 class="title">Next Bus Stop</h1>
+                </div>
+            </header>
+            <div id="pageManager"></div>
+        </div>
+    </body>
+</html>
