@@ -34,6 +34,7 @@
         <script src="js/libs/backbone-0.9.10.js"></script>
         <script src="compiled/js/classes/PageManager.js"></script>
         <script src="compiled/js/classes/Station.js"></script>
+        <script src="compiled/js/classes/Location.js"></script>
         <script src="compiled/js/app.js"></script>
     </head>
     <body>
@@ -41,6 +42,10 @@
             <header class="fixed">
                 <div id="navigation" class="navigation">
                     <h1 class="title">Next Bus Stop</h1>
+                </div>
+                <div id="location">
+                    Your current location: <span class="current"></span>
+                    <div class="log"></div>
                 </div>
             </header>
             <div id="pageManager"></div>
