@@ -5,8 +5,8 @@ window.Travel = Backbone.Model.extend
         distance_to_next: null
         distance_to_next_traveled: 0
 
-    step: 0.05 #seconds between each increment
-    distance_per_step: 1 #kilometers traveled per step
+    step: 1 #seconds between each increment
+    distance_per_step: 0.2 #kilometers traveled per step
     station_wait: 2 #seconds to wait in station
 
     initialize: ->
@@ -41,13 +41,28 @@ window.Travel = Backbone.Model.extend
 
         clearTimeout @intervalId
         @intervalId = _.delay =>
-            @set distance_to_next_traveled: @get('distance_to_next_traveled') + @distance_per_step
+            index = @get('index')
+            next_index = index+1
 
+            @set distance_to_next_traveled: @get('distance_to_next_traveled') + @distance_per_step
             traveled = @get('distance_to_next_traveled')
             goal = @get('distance_to_next')
 
+            # interpolate
+            factor = traveled / goal
+            station = app.stations.getStationByName @get('journey')[index]
+            next_station = app.stations.getStationByName @get('journey')[next_index]
+
+            latitude = station.get('latitude') + factor * (next_station.get('latitude')-station.get('latitude'))
+            longitude = station.get('longitude') + factor * (next_station.get('longitude')-station.get('longitude'))
+
+            console.log "current", latitude, longitude
+            app.location.set current:
+                coords:
+                    latitude: latitude
+                    longitude: longitude
+
             if traveled >= goal
-                next_index = @get('index')+1
                 @set index: next_index
             else
                 @increment()

@@ -13,8 +13,8 @@ window.Station = Backbone.Model.extend
     updateDistance: ->
         current_coords = app.location.get('current').coords
         if current_coords.latitude? and current_coords.longitude?
-            current_position = new LatLon parseFloat(current_coords.latitude), parseFloat(current_coords.longitude)
-            station_position = new LatLon parseFloat(@get 'latitude'), parseFloat(@get 'longitude')
+            current_position = new LatLon (current_coords.latitude), (current_coords.longitude)
+            station_position = new LatLon (@get 'latitude'), (@get 'longitude')
 
             # distance in kilometers
             distance = parseFloat current_position.distanceTo station_position
@@ -47,8 +47,8 @@ window.StationCollection = Backbone.Collection.extend
 
         # get rid of x,y coordinates, it's too confusing with latitude and longitude
         _.map stations, (element, index) ->
-            element.latitude = element.locationY
-            element.longitude = element.locationX
+            element.latitude = parseFloat element.locationY
+            element.longitude = parseFloat element.locationX
             delete element.locationX
             delete element.locationY
 

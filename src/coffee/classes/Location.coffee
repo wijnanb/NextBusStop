@@ -9,7 +9,7 @@ window.Location = Backbone.Model.extend
 
     initialize: ->
         _.bindAll this
-        @watchPosition()
+        #@watchPosition()
 
     watchPosition: ->
         options =
@@ -21,6 +21,8 @@ window.Location = Backbone.Model.extend
 
     onPositionUpdate: (position) ->
         @write "position update at #{Date(position.timestamp)}"
+        position.latitude = parseFloat position.latitude
+        position.longitude = parseFloat position.longitude
         @set current: position
 
     onPositionError: (error) ->
