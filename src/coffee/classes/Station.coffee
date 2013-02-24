@@ -5,25 +5,30 @@ window.Station = Backbone.Model.extend
         longitude: null
         name: null
         standardname: null
+        distance: null
 
     initialize: ->
+        @updateDistance()
 
-    distanceFromCurrent: ->
+    updateDistance: ->
         current_coords = app.location.get('current').coords
-        unless current_coords.latitude? and current_coords.longitude?
-            console.error "current position not available to calculate distance for ", @get('id')
+        if current_coords.latitude? and current_coords.longitude?
+            current_position = new LatLon parseFloat(current_coords.latitude), parseFloat(current_coords.longitude)
+            station_position = new LatLon parseFloat(@get 'latitude'), parseFloat(@get 'longitude')
 
-        current_position = new LatLon parseFloat(current_coords.latitude), parseFloat(current_coords.longitude)
-        station_position = new LatLon parseFloat(@get 'latitude'), parseFloat(@get 'longitude')
+            # distance in kilometers
+            distance = parseFloat current_position.distanceTo station_position
 
-        # distance in kilometers
-        distance = current_position.distanceTo station_position
+            @set distance: distance
+            return distance
 
 
 window.StationCollection = Backbone.Collection.extend
     model: Station
     url: config.stationsAPI
     _idAttr: 'id'
+    comparator: "distance"
+
     initialize: ->
         _.bindAll this
         try
@@ -34,6 +39,8 @@ window.StationCollection = Backbone.Collection.extend
             console.error error
 
         @fetch (success: @onFetchStations, error: @onFetchStationsError)
+
+        app.location.on 'change:current', @calculateDistanceMap
 
     parse: (response, options) ->
         stations = response.station
@@ -56,8 +63,41 @@ window.StationCollection = Backbone.Collection.extend
     onFetchStationsError: (model, xhr, options) ->
         console.error "error fetching stations from ", @url
 
-    getDistanceMap: ->
-        @each (station, index) =>
-            distance = station.distanceFromCurrent()
+    calculateDistanceMap: ->
+        if app.location.get('current')?
+            console.log "calculateDistanceMap"
+
+            pending = @length
+            @each (station, index) =>
+                distance = station.updateDistance()
+                name = station.get('name')
+                #console.log name, distance, 'km'
+                unless --pending
+                    console.log "ready"
+                    @sort()
+                    @trigger "distanceMap"
+
+
+window.StationCollectionView = Backbone.View.extend
+    initialize: ->
+        _.bindAll this
+        @model.on "distanceMap", @render
+        @model.on "reset", @render
+
+    render: ->
+        console.log "render"
+        output = ""
+        @model.each (station, index) =>
+            distance = station.get('distance')
             name = station.get('name')
-            console.log name, distance, 'km'
+            output += """<div class="station">
+                    <span class="name">#{name}</span>
+                    <span class="distance">#{distance} km</span>
+                </div>"""
+
+        @$el.html output
+
+
+
+
+

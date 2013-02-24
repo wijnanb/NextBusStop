@@ -2,13 +2,13 @@ window.App = Backbone.Model.extend
     initialize: ->
         _.bindAll this
 
-        @stations = new StationCollection
+        _.defer =>
+            @location = new Location
+            @locationView = new LocationView model: @location, el: document.getElementById 'location'
+            @locationView.render()
 
-        @location = new Location
-        @locationView = new LocationView model: @location, el: document.getElementById 'location'
-        @locationView.render()
-
-
+            @stations = new StationCollection
+            @stationsView = new StationCollectionView model: @stations, el: document.getElementById 'stations'
 
 # Bootstrap application on jQuery/Zepto ready  (use deviceReady for PhoneGap)
 $ ->
