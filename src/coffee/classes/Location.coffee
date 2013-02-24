@@ -13,6 +13,10 @@ window.Location = Backbone.Model.extend
 
     watchPosition: ->
         options =
+            maximumAge: 60000 # 1 minute old
+            timeout: 30000 # wait 30 seconds
+            enableHighAccuracy: true # turn on GPS of the device
+
         @watchId = navigator.geolocation.watchPosition @onPositionUpdate, @onPositionError, options
 
     onPositionUpdate: (position) ->
@@ -39,13 +43,23 @@ window.LocationView = Backbone.View.extend
         _.bindAll this
         @current = @$el.find '.current'
         @log = @$el.find '.log'
+        @map = @$el.find '.map'
 
         @model.on 'change:current', @render
         @model.on 'change:log', @render
 
     render: ->
-        @current.html @model.get('current').coords.latitude + ", " + @model.get('current').coords.longitude
+        latitude = @model.get('current').coords.latitude
+        longitude = @model.get('current').coords.longitude
+        width = $(window).width()
+
+        @current.html latitude + ", " + longitude
         @log.html @model.get('log')
+
+        if latitude? and longitude?
+            map_url = "http://maps.googleapis.com/maps/api/staticmap?center=#{latitude},#{longitude}&amp;zoom=13&amp;size=#{width}x120&amp;sensor=false&amp;markers=color:red%7C#{latitude},#{longitude}"
+            @map.html """<img src="#{map_url}" />"""
+
         return this
 
 
