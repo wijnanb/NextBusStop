@@ -77,6 +77,16 @@ window.StationCollection = Backbone.Collection.extend
                     @sort()
                     @trigger "distanceMap"
 
+    getStationByName: (name) ->
+        @find (element) -> element.get('name') is name
+
+    distanceBetween: (station1, station2) ->
+        station1_position = new LatLon parseFloat(station1.get 'latitude'), parseFloat(station1.get 'longitude')
+        station2_position = new LatLon parseFloat(station2.get 'latitude'), parseFloat(station2.get 'longitude')
+
+        # distance in kilometers
+        distance = parseFloat station1_position.distanceTo station2_position
+
 
 window.StationCollectionView = Backbone.View.extend
     initialize: ->

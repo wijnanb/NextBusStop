@@ -10,6 +10,8 @@ window.App = Backbone.Model.extend
             @stations = new StationCollection
             @stationsView = new StationCollectionView model: @stations, el: document.getElementById 'stations'
 
+            @travel = new Travel
+
 # Bootstrap application on jQuery/Zepto ready  (use deviceReady for PhoneGap)
 $ ->
     window.app = new App()
